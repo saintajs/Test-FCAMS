@@ -1,0 +1,42 @@
+@model FCAMS.Web.Models.ViewModels.AuditFindingCreateViewModel
+@{
+    ViewBag.Title = "Raise Finding";
+}
+<div class="page-header">
+    <h1>Raise Audit Finding</h1>
+</div>
+
+@using (Html.BeginForm("CreateFinding", "Audit", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.AuditId)
+    @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FindingTitle)
+        @Html.TextBoxFor(m => m.FindingTitle, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FindingTitle)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.FindingDescription)
+        @Html.TextAreaFor(m => m.FindingDescription, new { @class = "form-control", rows = 5 })
+        @Html.ValidationMessageFor(m => m.FindingDescription)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Severity)
+        @Html.DropDownListFor(m => m.Severity,
+                 new SelectList(new[] { "Low", "Medium", "High", "Critical" }, Model.Severity),
+                 new { @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.DueDate)
+        @Html.TextBoxFor(m => m.DueDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.TransactionId)
+        @Html.TextBoxFor(m => m.TransactionId, new { @class = "form-control", placeholder = "Optional -- link to a specific transaction Id" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Raise Finding</button>
+    <a href="@Url.Action("Details", new { id = Model.AuditId })" class="btn btn-link">Cancel</a>
+}

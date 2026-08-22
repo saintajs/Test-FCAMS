@@ -1,0 +1,29 @@
+@model FCAMS.Web.Models.FinancialTransaction
+@{
+    ViewBag.Title = "Transaction " + Model.TransactionRef;
+}
+<div class="page-header">
+    <h1>Transaction @Model.TransactionRef</h1>
+    <span class="status-badge status-@Model.Status.ToLower()">@Model.Status</span>
+</div>
+
+<div class="detail-grid">
+    <div><span class="detail-label">Date</span><span>@Model.TransactionDate.ToString("MMMM d, yyyy")</span></div>
+    <div><span class="detail-label">Amount</span><span>@Model.Amount.ToString("C") @Model.CurrencyCode</span></div>
+    <div><span class="detail-label">Account Code</span><span>@Model.AccountCode</span></div>
+    <div><span class="detail-label">Department</span><span>@Model.DepartmentName</span></div>
+    <div><span class="detail-label">Counterparty</span><span>@(Model.CounterpartyName ?? "-")</span></div>
+    <div><span class="detail-label">Created By</span><span>@Model.CreatedByName</span></div>
+    <div><span class="detail-label">Created</span><span>@Model.CreatedDate.ToString("MMM d, yyyy HH:mm") UTC</span></div>
+    <div class="detail-wide"><span class="detail-label">Description</span><span>@(Model.Description ?? "-")</span></div>
+</div>
+
+@if (Model.Status == "Flagged")
+{
+    <div class="alert alert-warning">
+        This transaction has been flagged by the compliance rule engine.
+        See <a href="@Url.Action("Violations", "Compliance")">Compliance &gt; Violations</a> for details.
+    </div>
+}
+
+<a href="@Url.Action("Index")" class="btn btn-link">&larr; Back to Transactions</a>

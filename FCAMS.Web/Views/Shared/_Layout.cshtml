@@ -1,0 +1,76 @@
+@using FCAMS.Web
+@using FCAMS.Web.Services
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewBag.Title - FCAMS</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-brand">
+            <a href="@Url.Action("Index", "Home")">FCAMS</a>
+            <span class="navbar-subtitle">Financial Compliance &amp; Audit Management</span>
+        </div>
+        @if (Request.IsAuthenticated)
+        {
+            var user = SessionUser.Current;
+            <ul class="navbar-links">
+                <li><a href="@Url.Action("Index", "Home")">Dashboard</a></li>
+                <li><a href="@Url.Action("Index", "Transactions")">Transactions</a></li>
+                <li><a href="@Url.Action("Violations", "Compliance")">Violations</a></li>
+                <li><a href="@Url.Action("Rules", "Compliance")">Rules</a></li>
+                <li><a href="@Url.Action("Index", "Audit")">Audits</a></li>
+                <li><a href="@Url.Action("Index", "Reports")">Reports</a></li>
+                @if (user != null && user.RoleName == "Administrator")
+                {
+                    <li class="navbar-dropdown">
+                        <a href="#">Admin</a>
+                        <ul>
+                            <li><a href="@Url.Action("Users", "Admin")">Users</a></li>
+                            <li><a href="@Url.Action("AuditTrail", "Admin")">System Audit Trail</a></li>
+                            <li><a href="@Url.Action("ExceptionLog", "Admin")">Exception Log</a></li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+            <div class="navbar-user">
+                <span>@(user.FullName) <em>(@(user.RoleName))</em></span>
+                @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { style = "display:inline" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="link-button">Sign out</button>
+                }
+            </div>
+        }
+    </nav>
+
+    <main class="container">
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert alert-success">@TempData["Message"]</div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger">@TempData["Error"]</div>
+        }
+        @RenderBody()
+    </main>
+
+    <footer class="footer">
+        <p>Financial Compliance &amp; Audit Management System &mdash; Student Portfolio Project</p>
+    </footer>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/app")
+    @RenderSection("Scripts", required: false)
+</body>
+</html>
+
+
+

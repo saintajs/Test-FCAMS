@@ -1,0 +1,95 @@
+@model FCAMS.Web.Models.User
+
+@{
+    ViewBag.Title = "User Details";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+
+            <h2>User Details</h2>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong>@Model.FullName</strong>
+                </div>
+
+                <div class="panel-body">
+
+                    <dl class="dl-horizontal">
+
+                        <dt>User ID</dt>
+                        <dd>@Model.UserId</dd>
+
+                        <dt>Username</dt>
+                        <dd>@Model.Username</dd>
+
+                        <dt>Email</dt>
+                        <dd>@Model.Email</dd>
+
+                        <dt>Full Name</dt>
+                        <dd>@Model.FullName</dd>
+
+                        <dt>Role</dt>
+                        <dd>@(Model.RoleName ?? "-")</dd>
+
+                        <dt>Department</dt>
+                        <dd>@(Model.DepartmentName ?? "-")</dd>
+
+                        <dt>Status</dt>
+                        <dd>
+                            @if (Model.IsActive)
+                            {
+                                <span class="label label-success">Active</span>
+                            }
+                            else
+                            {
+                                <span class="label label-danger">Inactive</span>
+                            }
+                        </dd>
+
+                        <dt>Failed Logins</dt>
+                        <dd>@Model.FailedLoginCount</dd>
+
+                        <dt>Locked Until</dt>
+                        <dd>
+                            @(Model.LockedOutUntil.HasValue
+                                ? Model.LockedOutUntil.Value.ToString("MMM d, yyyy HH:mm")
+                                : "-")
+                        </dd>
+
+                        <dt>Created Date</dt>
+                        <dd>@Model.CreatedDate.ToString("MMM d, yyyy HH:mm")</dd>
+
+                        <dt>Last Login</dt>
+                        <dd>
+                            @(Model.LastLoginDate.HasValue
+                                ? Model.LastLoginDate.Value.ToString("MMM d, yyyy HH:mm")
+                                : "Never")
+                        </dd>
+
+                    </dl>
+
+                </div>
+
+                <div class="panel-footer">
+                    @Html.ActionLink(
+                        "Edit User",
+                        "EditUser",
+                        "Admin",
+                        new { id = Model.UserId },
+                        new { @class = "btn btn-primary" })
+
+                    @Html.ActionLink(
+                        "Back to Users",
+                        "Users",
+                        "Admin",
+                        null,
+                        new { @class = "btn btn-default" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

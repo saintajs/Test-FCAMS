@@ -1,0 +1,39 @@
+@model FCAMS.Web.Models.PagedResult<FCAMS.Web.Models.AuditLogEntry>
+@{
+    ViewBag.Title = "System Audit Trail";
+}
+<div class="page-header">
+    <h1>System Audit Trail</h1>
+</div>
+<p class="muted">Every Create, Update, Delete, Login, Logout, View, and Export action recorded across the system.</p>
+
+<table class="data-table">
+    <thead>
+        <tr><th>Timestamp (UTC)</th><th>User</th><th>Action</th><th>Entity</th><th>Entity Id</th><th>IP Address</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var entry in Model.Items)
+        {
+            <tr>
+                <td>@entry.Timestamp.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                <td>@(entry.Username ?? "(system)")</td>
+                <td>@entry.ActionType</td>
+                <td>@entry.EntityName</td>
+                <td>@(entry.EntityId ?? "-")</td>
+                <td>@(entry.IPAddress ?? "-")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div class="pager">
+    @if (Model.PageNumber > 1)
+    {
+        <a href="@Url.Action("AuditTrail", new { pageNumber = Model.PageNumber - 1 })">&laquo; Previous</a>
+    }
+    <span>Page @Model.PageNumber of @Math.Max(Model.TotalPages, 1) (@Model.TotalRowCount total)</span>
+    @if (Model.PageNumber < Model.TotalPages)
+    {
+        <a href="@Url.Action("AuditTrail", new { pageNumber = Model.PageNumber + 1 })">Next &raquo;</a>
+    }
+</div>

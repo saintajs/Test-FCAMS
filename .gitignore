@@ -1,0 +1,30 @@
+## Visual Studio / .NET Framework build artifacts
+[Bb]in/
+[Oo]bj/
+*.user
+*.suo
+.vs/
+packages/
+publish/
+*.pdb
+*.cache
+
+## Generated reports (runtime output, not source)
+FCAMS.Web/App_Data/GeneratedReports/*
+!FCAMS.Web/App_Data/GeneratedReports/.gitkeep
+
+## Crystal Reports designer files are meant to be added locally per
+## Docs/CRYSTAL_REPORTS_SETUP.md -- not ignored, since once you add them
+## they SHOULD be committed; nothing to ignore here by default.
+
+## OS/editor cruft
+.DS_Store
+Thumbs.db
+*.swp
+
+# Local backup/debug files
+*.bak
+*.backup
+error_debug.html
+login_error.html
+nuget.exe

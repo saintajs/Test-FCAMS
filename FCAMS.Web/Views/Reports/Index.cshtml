@@ -1,0 +1,50 @@
+@model FCAMS.Web.Models.ViewModels.ReportParametersViewModel
+@{
+    ViewBag.Title = "Reports";
+}
+<div class="page-header">
+    <h1>Reports</h1>
+</div>
+
+<div class="dashboard-columns">
+    <section class="panel">
+        <h2>Compliance Summary Report</h2>
+        <p class="muted">Violations grouped by rule and severity, with total amount at risk, for a date range.</p>
+        @using (Html.BeginForm("ComplianceSummary", "Reports", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.LabelFor(m => m.DateFrom)
+                @Html.TextBoxFor(m => m.DateFrom, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.DateTo)
+                @Html.TextBoxFor(m => m.DateTo, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+            </div>
+            <button type="submit" class="btn btn-primary">Download PDF</button>
+        }
+    </section>
+
+    <section class="panel">
+        <h2>System Audit Trail Report</h2>
+        <p class="muted">Every logged Create/Update/Delete/Login/Export action in the system for a date range.</p>
+        @using (Html.BeginForm("AuditTrail", "Reports", FormMethod.Post))
+        {
+            @Html.AntiForgeryToken()
+            <div class="form-group">
+                @Html.Label("DateFrom", "From")
+                <input type="date" name="DateFrom" class="form-control" value="@Model.DateFrom.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="form-group">
+                @Html.Label("DateTo", "To")
+                <input type="date" name="DateTo" class="form-control" value="@Model.DateTo.ToString("yyyy-MM-dd")" />
+            </div>
+            <button type="submit" class="btn btn-primary">Download PDF</button>
+        }
+    </section>
+</div>
+
+<p class="muted small">
+    Reports are rendered as PDF via iTextSharp today. The same stored procedures also back two Crystal Reports
+    (.rpt) report definitions -- see <code>Docs/CRYSTAL_REPORTS_SETUP.md</code> to build those in the designer.
+</p>

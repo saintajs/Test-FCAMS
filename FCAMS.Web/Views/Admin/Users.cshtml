@@ -1,0 +1,149 @@
+﻿@model IEnumerable<FCAMS.Web.Models.User>
+
+@{
+    ViewBag.Title = "Users";
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <h2>Users</h2>
+
+            <p>
+                @Html.ActionLink(
+                    "Create User",
+                    "Create",
+                    "Admin",
+                    null,
+                    new { @class = "btn btn-primary" }
+                )
+            </p>
+
+        </div>
+    </div>
+
+    <hr />
+
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="panel panel-default">
+
+                <div class="panel-heading">
+                    <strong>User Management</strong>
+                </div>
+
+                <div class="panel-body">
+
+                    @if (Model != null && Model.Any())
+                    {
+                        <div class="table-responsive">
+
+                            <table class="table table-striped table-bordered table-hover">
+
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Full Name</th>
+                                        <th>Department</th>
+                                        <th>Role</th>
+                                        <th>Active</th>
+                                        <th>Last Login</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+
+                                    @foreach (var u in Model)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                @u.Username
+                                            </td>
+
+                                            <td>
+                                                @u.FullName
+                                            </td>
+
+                                            <td>
+                                                @(u.DepartmentName ?? "-")
+                                            </td>
+
+                                            <td>
+                                                @u.RoleName
+                                            </td>
+
+                                            <td>
+                                                @if (u.IsActive)
+                                                {
+                                                    <span class="label label-success">
+                                                        Yes
+                                                    </span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-danger">
+                                                        No
+                                                    </span>
+                                                }
+                                            </td>
+
+                                            <td>
+                                                @if (u.LastLoginDate.HasValue)
+                                                {
+                                                    @u.LastLoginDate.Value.ToString("MMM d, yyyy HH:mm")
+                                                }
+                                                else
+                                                {
+                                                    @:Never
+                                                }
+                                            </td>
+
+                                            <td>
+
+                                                @Html.ActionLink(
+                                                    "Edit",
+                                                    "EditUser",
+                                                    "Admin",
+                                                    new { id = u.UserId },
+                                                    new { @class = "btn btn-primary btn-xs" }
+                                                )
+
+                                                @Html.ActionLink(
+                                                    "Details",
+                                                    "UserDetails",
+                                                    "Admin",
+                                                    new { id = u.UserId },
+                                                    new { @class = "btn btn-info btn-xs" }
+                                                )
+
+                                            </td>
+
+                                        </tr>
+                                    }
+
+                                </tbody>
+
+                            </table>
+
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-info">
+                            No users found.
+                        </div>
+                    }
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>

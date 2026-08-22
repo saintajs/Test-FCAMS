@@ -1,0 +1,335 @@
+﻿@model FCAMS.Web.Models.ViewModels.TransactionListFilterViewModel
+
+@{
+    ViewBag.Title = "Transactions";
+
+    var results = new List<FCAMS.Web.Models.FinancialTransaction>();
+
+    if (Model != null && Model.Results != null && Model.Results.Items != null)
+    {
+        results = Model.Results.Items;
+    }
+
+    var currentPage = 1;
+    var totalPages = 0;
+
+    if (Model != null)
+    {
+        currentPage = Model.PageNumber;
+
+        if (currentPage <= 0)
+        {
+            currentPage = 1;
+        }
+
+        if (Model.Results != null)
+        {
+            totalPages = Model.Results.TotalPages;
+        }
+    }
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-12">
+            <h2>Financial Transactions</h2>
+        </div>
+    </div>
+
+    <hr />
+
+    @using (Html.BeginForm("Index", "Transactions", FormMethod.Get, new { @class = "form-inline" }))
+    {
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    @Html.Label("DepartmentId", "Department", new { @class = "control-label" })
+
+                    @Html.DropDownList(
+                        "DepartmentId",
+                        new SelectList(
+                            Model.Departments,
+                            "DepartmentId",
+                            "DepartmentName",
+                            Model.DepartmentId
+                        ),
+                        "All Departments",
+                        new { @class = "form-control" }
+                    )
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    @Html.Label("Status", "Status", new { @class = "control-label" })
+
+                    @Html.DropDownList(
+                        "Status",
+                        new SelectList(
+                            new[]
+                            {
+                                new { Value = "Pending", Text = "Pending" },
+                                new { Value = "Approved", Text = "Approved" },
+                                new { Value = "Rejected", Text = "Rejected" },
+                                new { Value = "Flagged", Text = "Flagged" }
+                            },
+                            "Value",
+                            "Text",
+                            Model.Status
+                        ),
+                        "All Statuses",
+                        new { @class = "form-control" }
+                    )
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    @Html.Label("DateFrom", "From", new { @class = "control-label" })
+
+                    @Html.TextBox(
+                        "DateFrom",
+                        Model.DateFrom.HasValue
+                            ? Model.DateFrom.Value.ToString("yyyy-MM-dd")
+                            : "",
+                        new
+                        {
+                            type = "date",
+                            @class = "form-control"
+                        }
+                    )
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    @Html.Label("DateTo", "To", new { @class = "control-label" })
+
+                    @Html.TextBox(
+                        "DateTo",
+                        Model.DateTo.HasValue
+                            ? Model.DateTo.Value.ToString("yyyy-MM-dd")
+                            : "",
+                        new
+                        {
+                            type = "date",
+                            @class = "form-control"
+                        }
+                    )
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div style="margin-top:25px;">
+
+                    <button type="submit" class="btn btn-primary">
+                        Filter
+                    </button>
+
+                    @Html.ActionLink(
+                        "Clear",
+                        "Index",
+                        "Transactions",
+                        null,
+                        new { @class = "btn btn-default" }
+                    )
+
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <br />
+
+    <div class="row">
+        <div class="col-md-12">
+
+            @if (results.Count > 0)
+            {
+                <div class="table-responsive">
+
+                    <table class="table table-bordered table-striped table-hover">
+
+                        <thead>
+                            <tr>
+                                <th>Transaction Ref</th>
+                                <th>Date</th>
+                                <th>Amount</th>
+                                <th>Currency</th>
+                                <th>Account</th>
+                                <th>Department</th>
+                                <th>Counterparty</th>
+                                <th>Status</th>
+                                <th>Created By</th>
+                                <th>Created Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var transaction in results)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @transaction.TransactionRef
+                                    </td>
+
+                                    <td>
+                                        @transaction.TransactionDate.ToString("yyyy-MM-dd")
+                                    </td>
+
+                                    <td class="text-right">
+                                        @transaction.Amount.ToString("N2")
+                                    </td>
+
+                                    <td>
+                                        @transaction.CurrencyCode
+                                    </td>
+
+                                    <td>
+                                        @transaction.AccountCode
+                                    </td>
+
+                                    <td>
+                                        @if (String.IsNullOrEmpty(transaction.DepartmentName))
+                                        {
+                                            <span>-</span>
+                                        }
+                                        else
+                                        {
+                                            @transaction.DepartmentName
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (String.IsNullOrEmpty(transaction.CounterpartyName))
+                                        {
+                                            <span>-</span>
+                                        }
+                                        else
+                                        {
+                                            @transaction.CounterpartyName
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (String.IsNullOrEmpty(transaction.Status))
+                                        {
+                                            <span>-</span>
+                                        }
+                                        else
+                                        {
+                                            @transaction.Status
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @if (String.IsNullOrEmpty(transaction.CreatedByName))
+                                        {
+                                            <span>-</span>
+                                        }
+                                        else
+                                        {
+                                            @transaction.CreatedByName
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @transaction.CreatedDate.ToString("yyyy-MM-dd HH:mm")
+                                    </td>
+
+                                    <td>
+                                        @Html.ActionLink(
+                                            "View",
+                                            "Details",
+                                            "Transactions",
+                                            new { id = transaction.TransactionId },
+                                            new { @class = "btn btn-xs btn-info" }
+                                        )
+                                    </td>
+
+                                </tr>
+                            }
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-6">
+                        <p>
+                            Page @currentPage of @totalPages
+                        </p>
+                    </div>
+
+                    <div class="col-md-6 text-right">
+
+                        @if (currentPage > 1)
+                        {
+                            @Html.ActionLink(
+                                "Previous",
+                                "Index",
+                                "Transactions",
+                                new
+                                {
+                                    DepartmentId = Model.DepartmentId,
+                                    Status = Model.Status,
+                                    DateFrom = Model.DateFrom.HasValue
+                                        ? Model.DateFrom.Value.ToString("yyyy-MM-dd")
+                                        : "",
+                                    DateTo = Model.DateTo.HasValue
+                                        ? Model.DateTo.Value.ToString("yyyy-MM-dd")
+                                        : "",
+                                    PageNumber = currentPage - 1,
+                                    PageSize = Model.PageSize
+                                },
+                                new { @class = "btn btn-default" }
+                            )
+                        }
+
+                        @if (currentPage < totalPages)
+                        {
+                            @Html.ActionLink(
+                                "Next",
+                                "Index",
+                                "Transactions",
+                                new
+                                {
+                                    DepartmentId = Model.DepartmentId,
+                                    Status = Model.Status,
+                                    DateFrom = Model.DateFrom.HasValue
+                                        ? Model.DateFrom.Value.ToString("yyyy-MM-dd")
+                                        : "",
+                                    DateTo = Model.DateTo.HasValue
+                                        ? Model.DateTo.Value.ToString("yyyy-MM-dd")
+                                        : "",
+                                    PageNumber = currentPage + 1,
+                                    PageSize = Model.PageSize
+                                },
+                                new { @class = "btn btn-default" }
+                            )
+                        }
+
+                    </div>
+
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-info">
+                    No transactions found for the selected filters.
+                </div>
+            }
+
+        </div>
+    </div>
+
+</div>

@@ -1,0 +1,37 @@
+@model FCAMS.Web.Models.ViewModels.LoginViewModel
+@{
+    ViewBag.Title = "Sign In";
+    Layout = "~/Views/Shared/_LayoutAnonymous.cshtml";
+}
+<div class="login-card">
+    <h1>FCAMS</h1>
+    <p class="subtitle">Financial Compliance &amp; Audit Management System</p>
+
+    @using (Html.BeginForm("Login", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("ReturnUrl", Model.ReturnUrl)
+        @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.Username)
+            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", autofocus = "autofocus" })
+            @Html.ValidationMessageFor(m => m.Username)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password)
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Password)
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+    }
+
+    <div class="demo-accounts">
+        <p><strong>Demo accounts (see Database/Seed/03_SeedData.sql):</strong></p>
+        <ul>
+            <li><code>admin</code> / <code>Admin@123</code> &mdash; Administrator</li>
+            <li><code>compliance</code> / <code>Comply@123</code> &mdash; Compliance Officer</li>
+            <li><code>auditor</code> / <code>Audit@123</code> &mdash; Auditor</li>
+        </ul>
+    </div>
+</div>

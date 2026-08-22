@@ -1,0 +1,86 @@
+@model FCAMS.Web.Models.ViewModels.DashboardViewModel
+@{
+    ViewBag.Title = "Dashboard";
+}
+<div class="page-header">
+    <h1>Dashboard</h1>
+</div>
+
+<div class="kpi-grid">
+    <div class="kpi-card">
+        <span class="kpi-value">@Model.TransactionsLast30Days</span>
+        <span class="kpi-label">Transactions (30 days)</span>
+    </div>
+    <div class="kpi-card @(Model.OpenViolations > 0 ? "kpi-warning" : "")">
+        <span class="kpi-value">@Model.OpenViolations</span>
+        <span class="kpi-label">Open Violations</span>
+    </div>
+    <div class="kpi-card @(Model.CriticalOpenViolations > 0 ? "kpi-critical" : "")">
+        <span class="kpi-value">@Model.CriticalOpenViolations</span>
+        <span class="kpi-label">Critical Violations</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-value">@Model.ActiveAudits</span>
+        <span class="kpi-label">Active Audits</span>
+    </div>
+    <div class="kpi-card">
+        <span class="kpi-value">@Model.OpenFindings</span>
+        <span class="kpi-label">Open Findings</span>
+    </div>
+</div>
+
+<div class="dashboard-columns">
+    <section class="panel">
+        <h2>Open Violations by Severity</h2>
+        @if (Model.ViolationsBySeverity.Count == 0)
+        {
+            <p class="muted">No open violations. Nice work.</p>
+        }
+        else
+        {
+            <ul class="severity-bars">
+                @foreach (var kvp in Model.ViolationsBySeverity.OrderByDescending(k => k.Value))
+                {
+                    <li>
+                        <span class="severity-badge severity-@kvp.Key.ToLower()">@kvp.Key</span>
+                        <span>@kvp.Value</span>
+                    </li>
+                }
+            </ul>
+        }
+        <a href="@Url.Action("Violations", "Compliance")" class="btn-link">Review violations &rarr;</a>
+    </section>
+
+    <section class="panel">
+        <h2>Recent Activity</h2>
+        @if (Model.RecentActivity.Count == 0)
+        {
+            <p class="muted">No recent activity recorded.</p>
+        }
+        else
+        {
+            <table class="data-table compact">
+                <thead>
+                    <tr><th>When</th><th>User</th><th>Action</th><th>Entity</th></tr>
+                </thead>
+                <tbody>
+                    @foreach (var entry in Model.RecentActivity)
+                    {
+                        <tr>
+                            <td>@entry.Timestamp.ToString("MMM d, HH:mm")</td>
+                            <td>@(entry.Username ?? "system")</td>
+                            <td>@entry.ActionType</td>
+                            <td>@entry.EntityName @(!string.IsNullOrEmpty(entry.EntityId) ? "#" + entry.EntityId : "")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </section>
+</div>
+
+<div class="quick-actions">
+    <a href="@Url.Action("Create", "Transactions")" class="btn btn-primary">+ Record Transaction</a>
+    <a href="@Url.Action("Create", "Audit")" class="btn btn-secondary">+ New Audit Engagement</a>
+    <a href="@Url.Action("Index", "Reports")" class="btn btn-secondary">Generate Report</a>
+</div>

@@ -1,0 +1,41 @@
+@model System.Collections.Generic.List<FCAMS.Web.Models.ComplianceRule>
+@{
+    ViewBag.Title = "Compliance Rules";
+}
+<div class="page-header">
+    <h1>Compliance Rules</h1>
+</div>
+<p class="muted">Rules are evaluated automatically against every new transaction. Toggling a rule off here
+   takes effect immediately with no code deploy required.</p>
+
+<table class="data-table">
+    <thead>
+        <tr><th>Code</th><th>Name</th><th>Type</th><th>Severity</th><th>Threshold</th><th>Active</th></tr>
+    </thead>
+    <tbody>
+        @foreach (var rule in Model)
+        {
+            <tr>
+                <td>@rule.RuleCode</td>
+                <td>@rule.RuleName<br /><span class="muted small">@rule.Description</span></td>
+                <td>@rule.RuleType</td>
+                <td><span class="severity-badge severity-@rule.Severity.ToLower()">@rule.Severity</span></td>
+                <td>
+                    @(rule.ThresholdValue.HasValue ? rule.ThresholdValue.Value.ToString("C") : "-")
+                    @(rule.ThresholdWindowDays.HasValue ? " / " + rule.ThresholdWindowDays + "d window" : "")
+                </td>
+                <td>
+                    @using (Html.BeginForm("ToggleRule", "Compliance", FormMethod.Post))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.Hidden("ruleId", rule.RuleId)
+                        @Html.Hidden("isActive", !rule.IsActive)
+                        <button type="submit" class="toggle-btn @(rule.IsActive ? "on" : "off")">
+                            @(rule.IsActive ? "Active" : "Inactive")
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

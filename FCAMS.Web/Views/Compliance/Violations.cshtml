@@ -1,0 +1,46 @@
+@model System.Collections.Generic.List<FCAMS.Web.Models.ComplianceViolation>
+@{
+    ViewBag.Title = "Open Violations";
+}
+<div class="page-header">
+    <h1>Open Compliance Violations</h1>
+</div>
+
+<div class="filter-bar">
+    @foreach (var sev in new[] { "Critical", "High", "Medium", "Low" })
+    {
+        <a class="severity-filter severity-@sev.ToLower() @(ViewBag.SelectedSeverity == sev ? "active" : "")"
+           href="@Url.Action("Violations", new { severity = sev })">@sev</a>
+    }
+    <a class="severity-filter @(ViewBag.SelectedSeverity == null ? "active" : "")" href="@Url.Action("Violations")">All</a>
+</div>
+
+@if (Model.Count == 0)
+{
+    <p class="muted">No open violations for this filter. Nice work.</p>
+}
+else
+{
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Detected</th><th>Rule</th><th>Severity</th><th>Transaction</th>
+                <th class="numeric">Amount</th><th>Detail</th><th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var v in Model)
+            {
+                <tr>
+                    <td>@v.DetectedDate.ToString("MMM d, yyyy")</td>
+                    <td>@v.RuleCode &mdash; @v.RuleName</td>
+                    <td><span class="severity-badge severity-@v.Severity.ToLower()">@v.Severity</span></td>
+                    <td><a href="@Url.Action("Details", "Transactions", new { id = v.TransactionId })">@v.TransactionRef</a></td>
+                    <td class="numeric">@v.Amount.ToString("C")</td>
+                    <td class="detail-cell">@v.DetailMessage</td>
+                    <td><a href="@Url.Action("Resolve", new { id = v.ViolationId })" class="btn-link">Resolve</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}

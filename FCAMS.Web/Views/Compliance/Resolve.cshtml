@@ -1,0 +1,37 @@
+@model FCAMS.Web.Models.ViewModels.ViolationResolveViewModel
+@{
+    ViewBag.Title = "Resolve Violation";
+}
+<div class="page-header">
+    <h1>Resolve Violation</h1>
+</div>
+
+<div class="panel">
+    <p><strong>Transaction:</strong> @Model.TransactionRef</p>
+    <p><strong>Rule:</strong> @Model.RuleName</p>
+    <p><strong>Detail:</strong> @Model.DetailMessage</p>
+</div>
+
+@using (Html.BeginForm("Resolve", "Compliance", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.ViolationId)
+    @Html.Hidden("TransactionRef", Model.TransactionRef)
+    @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+
+    <div class="form-group">
+        <label>Resolution</label>
+        <div class="radio-group">
+            <label><input type="radio" name="NewStatus" value="Resolved" checked="checked" /> Resolved (a real issue, action taken)</label>
+            <label><input type="radio" name="NewStatus" value="FalsePositive" /> False Positive (not a real issue)</label>
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.ResolutionNotes)
+        @Html.TextAreaFor(m => m.ResolutionNotes, new { @class = "form-control", rows = 4, placeholder = "Explain the investigation and outcome -- this becomes part of the permanent audit trail." })
+        @Html.ValidationMessageFor(m => m.ResolutionNotes)
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit Resolution</button>
+    <a href="@Url.Action("Violations")" class="btn btn-link">Cancel</a>
+}

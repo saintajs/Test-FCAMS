@@ -1,0 +1,52 @@
+@model FCAMS.Web.Models.ViewModels.AuditEngagementCreateViewModel
+@{
+    ViewBag.Title = "New Audit Engagement";
+}
+<div class="page-header">
+    <h1>New Audit Engagement</h1>
+</div>
+
+@using (Html.BeginForm("Create", "Audit", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+
+    <div class="form-grid">
+        <div class="form-group form-group-wide">
+            @Html.LabelFor(m => m.AuditName)
+            @Html.TextBoxFor(m => m.AuditName, new { @class = "form-control", placeholder = "e.g. Q3 2026 Procurement Review" })
+            @Html.ValidationMessageFor(m => m.AuditName)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.DepartmentId)
+            @Html.DropDownListFor(m => m.DepartmentId,
+                     new SelectList(Model.Departments, "DepartmentId", "DepartmentName"),
+                     "-- Select Department --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DepartmentId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.LeadAuditorUserId)
+            @Html.DropDownListFor(m => m.LeadAuditorUserId,
+                     new SelectList(Model.Auditors, "UserId", "FullName"),
+                     "-- Select Lead Auditor --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.LeadAuditorUserId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PeriodStart)
+            @Html.TextBoxFor(m => m.PeriodStart, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PeriodStart)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.PeriodEnd)
+            @Html.TextBoxFor(m => m.PeriodEnd, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.PeriodEnd)
+        </div>
+        <div class="form-group form-group-wide">
+            @Html.LabelFor(m => m.Scope)
+            @Html.TextAreaFor(m => m.Scope, new { @class = "form-control", rows = 3, placeholder = "What accounts, processes, or time period does this audit cover?" })
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create Engagement</button>
+    <a href="@Url.Action("Index")" class="btn btn-link">Cancel</a>
+}

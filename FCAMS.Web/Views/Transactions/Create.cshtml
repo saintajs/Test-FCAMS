@@ -1,0 +1,63 @@
+@model FCAMS.Web.Models.ViewModels.TransactionCreateViewModel
+@{
+    ViewBag.Title = "Record Transaction";
+}
+<div class="page-header">
+    <h1>Record Transaction</h1>
+</div>
+
+@using (Html.BeginForm("Create", "Transactions", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(false, "", new { @class = "alert alert-danger" })
+
+    <div class="form-grid">
+        <div class="form-group">
+            @Html.LabelFor(m => m.TransactionRef)
+            @Html.TextBoxFor(m => m.TransactionRef, new { @class = "form-control", placeholder = "e.g. TXN-2026-00123" })
+            @Html.ValidationMessageFor(m => m.TransactionRef)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.TransactionDate)
+            @Html.TextBoxFor(m => m.TransactionDate, "{0:yyyy-MM-dd}", new { type = "date", @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.TransactionDate)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Amount)
+            @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", type = "number", step = "0.01" })
+            @Html.ValidationMessageFor(m => m.Amount)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CurrencyCode)
+            @Html.TextBoxFor(m => m.CurrencyCode, new { @class = "form-control", maxlength = 3 })
+            @Html.ValidationMessageFor(m => m.CurrencyCode)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.AccountCode)
+            @Html.TextBoxFor(m => m.AccountCode, new { @class = "form-control", placeholder = "e.g. GL-6100" })
+            @Html.ValidationMessageFor(m => m.AccountCode)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.DepartmentId)
+            @Html.DropDownListFor(m => m.DepartmentId,
+                     new SelectList(Model.Departments, "DepartmentId", "DepartmentName"),
+                     "-- Select Department --", new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.DepartmentId)
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.CounterpartyName)
+            @Html.TextBoxFor(m => m.CounterpartyName, new { @class = "form-control" })
+        </div>
+        <div class="form-group form-group-wide">
+            @Html.LabelFor(m => m.Description)
+            @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 3 })
+        </div>
+    </div>
+
+    <p class="muted">Once saved, the transaction is immediately evaluated against every active compliance rule
+       (see <a href="@Url.Action("Rules", "Compliance")">Compliance &gt; Rules</a>). Any breach automatically
+       flags the transaction and creates a violation record for review.</p>
+
+    <button type="submit" class="btn btn-primary">Save Transaction</button>
+    <a href="@Url.Action("Index")" class="btn btn-link">Cancel</a>
+}

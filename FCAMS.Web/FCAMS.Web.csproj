@@ -1,0 +1,438 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0"
+         DefaultTargets="Build"
+         xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- ========================================================= -->
+  <!-- Common MSBuild properties                                 -->
+  <!-- ========================================================= -->
+
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
+          Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+
+  <PropertyGroup>
+    <Configuration Condition="'$(Configuration)' == ''">Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">AnyCPU</Platform>
+
+    <ProjectGuid>{A1111111-1111-1111-1111-111111111111}</ProjectGuid>
+
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+
+    <RootNamespace>FCAMS.Web</RootNamespace>
+    <AssemblyName>FCAMS.Web</AssemblyName>
+
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+
+    <MvcBuildViews>false</MvcBuildViews>
+
+    <UseIISExpress>true</UseIISExpress>
+    <Use64BitIISExpress />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+
+    <ProjectTypeGuids>
+      {349c5851-65df-11da-9384-00065b846f21};
+      {FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}
+    </ProjectTypeGuids>
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- Debug                                                     -->
+  <!-- ========================================================= -->
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- Release                                                   -->
+  <!-- ========================================================= -->
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- .NET Framework references                                  -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Web.Routing" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration.Install" />
+
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- Microsoft.Web.Infrastructure                               -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="Microsoft.Web.Infrastructure, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Web.Infrastructure.2.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- ASP.NET MVC 5.2.9                                         -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="System.Web.Mvc, Version=5.2.9.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Mvc.5.2.9\lib\net45\System.Web.Mvc.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- ASP.NET Web Optimization                                  -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="System.Web.Optimization">
+      <HintPath>..\packages\Microsoft.AspNet.Web.Optimization.1.1.3\lib\net40\System.Web.Optimization.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- WebGrease                                                 -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="WebGrease">
+      <HintPath>..\packages\WebGrease.1.6.0\lib\WebGrease.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- ASP.NET Razor 3.2.9                                      -->
+  <!-- Fixes System.Web.Razor Version=3.0.0.0                    -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="System.Web.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.Razor.3.2.9\lib\net45\System.Web.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- ASP.NET WebPages 3.2.9                                   -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.Helpers.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+    <Reference Include="System.Web.WebPages, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+    <Reference Include="System.Web.WebPages.Razor, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35">
+      <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.9\lib\net45\System.Web.WebPages.Razor.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- Newtonsoft.Json                                          -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- iTextSharp                                                -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca">
+      <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- BouncyCastle 1.8.9                                       -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.9.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.9\lib\BouncyCastle.Crypto.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- Crystal Reports                                          -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Reference
+      Include="CrystalDecisions.CrystalReports.Engine, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304"
+      Condition="Exists('$(ProgramFiles)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll')">
+
+      <HintPath>$(ProgramFiles)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll</HintPath>
+      <Private>True</Private>
+
+    </Reference>
+
+    <Reference
+      Include="CrystalDecisions.Shared, Version=13.0.4000.0, Culture=neutral, PublicKeyToken=692fbea5521e1304"
+      Condition="Exists('$(ProgramFiles)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.Shared.dll')">
+
+      <HintPath>$(ProgramFiles)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.Shared.dll</HintPath>
+      <Private>True</Private>
+
+    </Reference>
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- C# source files                                           -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\AuditController.cs" />
+    <Compile Include="Controllers\ComplianceController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
+    <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\TransactionsController.cs" />
+
+    <Compile Include="DAL\SqlDataAccess.cs" />
+    <Compile Include="DAL\Repositories\AuditRepository.cs" />
+    <Compile Include="DAL\Repositories\ComplianceRepository.cs" />
+    <Compile Include="DAL\Repositories\LoggingRepositories.cs" />
+    <Compile Include="DAL\Repositories\ReportRepository.cs" />
+    <Compile Include="DAL\Repositories\TransactionRepository.cs" />
+    <Compile Include="DAL\Repositories\UserRepository.cs" />
+
+    <Compile Include="Infrastructure\AuditableActionAttribute.cs" />
+    <Compile Include="Infrastructure\AuthorizeRoleAttribute.cs" />
+    <Compile Include="Infrastructure\GlobalExceptionFilter.cs" />
+
+    <Compile Include="Models\DomainModels.cs" />
+    <Compile Include="Models\ViewModels\ViewModels.cs" />
+
+    <Compile Include="Services\AuditLogService.cs" />
+    <Compile Include="Services\AuthenticationService.cs" />
+    <Compile Include="Services\ComplianceRuleEngine.cs" />
+
+    <Compile
+      Include="Services\CrystalReportViewerHelper.cs"
+      Condition="Exists('$(ProgramFiles)\SAP BusinessObjects\Crystal Reports for .NET Framework 4.0\Common\SAP BusinessObjects Enterprise XI 4.0\win64_x64\dotnet\CrystalDecisions.CrystalReports.Engine.dll')" />
+
+    <Compile Include="Services\PasswordHasher.cs" />
+    <Compile Include="Services\PdfReportBuilder.cs" />
+    <Compile Include="Services\ReportService.cs" />
+
+    <Compile Include="App_Start\BundleConfig.cs" />
+    <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\RouteConfig.cs" />
+
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+
+    <Compile Include="Properties\AssemblyInfo.cs" />
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- Content files                                             -->
+  <!-- ========================================================= -->
+
+  <ItemGroup>
+
+    <Content Include="Global.asax" />
+
+    <Content Include="Web.config" />
+
+    <Content Include="Content\site.css" />
+
+    <Content Include="Scripts\app.js" />
+
+    <Content Include="Views\web.config" />
+
+    <Content Include="Views\_ViewStart.cshtml" />
+
+    <Content Include="Views\Shared\_Layout.cshtml" />
+    <Content Include="Views\Shared\_LayoutAnonymous.cshtml" />
+    <Content Include="Views\Shared\Error.cshtml" />
+    <Content Include="Views\Shared\Forbidden.cshtml" />
+
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Account\AccessDenied.cshtml" />
+
+    <Content Include="Views\Home\Index.cshtml" />
+    <Content Include="Views\Home\About.cshtml" />
+
+    <Content Include="Views\Transactions\Index.cshtml" />
+    <Content Include="Views\Transactions\Create.cshtml" />
+    <Content Include="Views\Transactions\Details.cshtml" />
+
+    <Content Include="Views\Compliance\Violations.cshtml" />
+    <Content Include="Views\Compliance\Resolve.cshtml" />
+    <Content Include="Views\Compliance\Rules.cshtml" />
+
+    <Content Include="Views\Audit\Index.cshtml" />
+    <Content Include="Views\Audit\Create.cshtml" />
+    <Content Include="Views\Audit\Details.cshtml" />
+    <Content Include="Views\Audit\CreateFinding.cshtml" />
+
+    <Content Include="Views\Reports\Index.cshtml" />
+
+    <Content Include="Views\Admin\Users.cshtml" />
+    <Content Include="Views\Admin\AuditTrail.cshtml" />
+    <Content Include="Views\Admin\ExceptionLog.cshtml" />
+
+    <Content Include="Views\Error\General.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\Forbidden.cshtml" />
+
+    <Content Include="Reports\README.txt" />
+
+    <Content Include="packages.config" />
+
+  </ItemGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- Visual Studio Web Application settings                    -->
+  <!-- ========================================================= -->
+
+  <PropertyGroup>
+    <!-- IMPORTANT: keep these values on one line -->
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">18.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+
+
+  <!-- ========================================================= -->
+  <!-- MSBuild imports                                           -->
+  <!-- ========================================================= -->
+
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+
+  <Import
+    Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets"
+    Condition="'$(VSToolsPath)' != ''" />
+
+
+  <!-- ========================================================= -->
+  <!-- Visual Studio Web Project                                 -->
+  <!-- ========================================================= -->
+
+  <ProjectExtensions>
+
+    <VisualStudio>
+
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+
+        <WebProjectProperties>
+
+          <UseIIS>True</UseIIS>
+
+          <AutoAssignPort>True</AutoAssignPort>
+
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+
+          <IISUrl>http://localhost:44300/</IISUrl>
+
+          <NTLMAuthentication>False</NTLMAuthentication>
+
+          <UseCustomServer>False</UseCustomServer>
+
+          <CustomServerUrl></CustomServerUrl>
+
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+
+        </WebProjectProperties>
+
+      </FlavorProperties>
+
+    </VisualStudio>
+
+  </ProjectExtensions>
+
+</Project>

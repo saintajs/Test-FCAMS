@@ -1,0 +1,183 @@
+@model FCAMS.Web.Models.AuditEngagement
+@{
+    ViewBag.Title = Model.AuditName;
+    var findings = ViewBag.Findings as System.Collections.Generic.List<FCAMS.Web.Models.AuditFinding>;
+}
+
+<div class="page-header">
+    <h1>@Model.AuditName</h1>
+    <span class="status-badge status-@Model.Status.ToLower()">@Model.Status</span>
+</div>
+
+<div class="detail-grid">
+    <div>
+        <span class="detail-label">Department</span>
+        <span>@Model.DepartmentName</span>
+    </div>
+
+    <div>
+        <span class="detail-label">Lead Auditor</span>
+        <span>@Model.LeadAuditorName</span>
+    </div>
+
+    <div>
+        <span class="detail-label">Period</span>
+        <span>
+            @Model.PeriodStart.ToString("MMM d, yyyy")
+            &ndash;
+            @Model.PeriodEnd.ToString("MMM d, yyyy")
+        </span>
+    </div>
+
+    <div>
+        <span class="detail-label">Created</span>
+        <span>@Model.CreatedDate.ToString("MMM d, yyyy")</span>
+    </div>
+
+    <div class="detail-wide">
+        <span class="detail-label">Scope</span>
+        <span>
+            @if (Model.Scope != null)
+            {
+                @Model.Scope
+            }
+            else
+            {
+                @:-
+            }
+        </span>
+    </div>
+</div>
+
+<div class="action-bar">
+    @using (Html.BeginForm(
+        "UpdateStatus",
+        "Audit",
+        FormMethod.Post,
+        new { style = "display:inline" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.Hidden("auditId", Model.AuditId)
+
+        if (Model.Status == "Planned")
+        {
+            @Html.Hidden("newStatus", "InProgress")
+            <button type="submit" class="btn btn-secondary">
+                Start Audit
+            </button>
+        }
+        else if (Model.Status == "InProgress")
+        {
+            @Html.Hidden("newStatus", "Completed")
+            <button type="submit" class="btn btn-secondary">
+                Mark Completed
+            </button>
+        }
+        else if (Model.Status == "Completed")
+        {
+            @Html.Hidden("newStatus", "Closed")
+            <button type="submit" class="btn btn-secondary">
+                Close Audit
+            </button>
+        }
+    }
+
+    <a href="@Url.Action("CreateFinding", new { auditId = Model.AuditId })"
+       class="btn btn-primary">
+        + Raise Finding
+    </a>
+</div>
+
+<h2>Findings</h2>
+
+@if (findings == null || findings.Count == 0)
+{
+    <p class="muted">No findings raised yet.</p>
+}
+else
+{
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Severity</th>
+                <th>Status</th>
+                <th>Raised By</th>
+                <th>Raised</th>
+                <th>Due</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @foreach (var f in findings)
+            {
+                <tr>
+                    <td>
+                        @f.FindingTitle
+                        <br />
+                        <span class="muted small">
+                            @f.FindingDescription
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="severity-badge severity-@f.Severity.ToLower()">
+                            @f.Severity
+                        </span>
+                    </td>
+
+                    <td>
+                        <span class="status-badge status-@f.Status.ToLower()">
+                            @f.Status
+                        </span>
+                    </td>
+
+                    <td>
+                        @f.RaisedByName
+                    </td>
+
+                    <td>
+                        @f.RaisedDate.ToString("MMM d, yyyy")
+                    </td>
+
+                    <td>
+                        @if (f.DueDate.HasValue)
+                        {
+                            @f.DueDate.Value.ToString("MMM d, yyyy")
+                        }
+                        else
+                        {
+                            @:-
+                        }
+                    </td>
+
+                    <td>
+                        @if (f.Status != "Closed")
+                        {
+                            using (Html.BeginForm(
+                                "UpdateFindingStatus",
+                                "Audit",
+                                FormMethod.Post,
+                                new { style = "display:inline" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                @Html.Hidden("findingId", f.FindingId)
+                                @Html.Hidden("auditId", Model.AuditId)
+                                @Html.Hidden("newStatus", "Closed")
+
+                                <button type="submit" class="btn-link">
+                                    Close
+                                </button>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<a href="@Url.Action("Index")" class="btn btn-link">
+    &larr; Back to Audit Engagements
+</a>
