@@ -3,12 +3,12 @@
    Script: 01_CreateTables.sql
    Purpose: Creates the core schema for the system.
    Target : Microsoft SQL Server 2019+ (works on Azure SQL Database too)
-   Run order: 01 -> 02 (indexes) -> 03 (seed) -> StoredProcedures/*.sql
+   Run order: 01 -> 02 (indexes) -> 03 (seed) -> all SQL files in StoredProcedures
    ============================================================================ */
 
-IF DB_ID('FCAMS_DB') IS NULL
+IF DB_ID('FCAMS') IS NULL
 BEGIN
-    PRINT 'Run this script while connected to the FCAMS_DB database (create it first via CREATE DATABASE FCAMS_DB;)';
+    PRINT 'Run this script while connected to the FCAMS database (create it first via CREATE DATABASE FCAMS;)';
 END
 GO
 
